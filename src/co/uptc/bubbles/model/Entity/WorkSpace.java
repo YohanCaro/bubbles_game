@@ -1,5 +1,7 @@
 package co.uptc.bubbles.model.Entity;
 
+import co.uptc.bubbles.utilities.Constants;
+
 public class WorkSpace extends Coordenate {
 	
 	private double width;
@@ -25,8 +27,12 @@ public class WorkSpace extends Coordenate {
 	 * @param coor coordenada
 	 * @return true si etá
 	 */
-	public boolean isIntoX(Coordenate coor) {		
-		return (coor.getX() >= 0 && coor.getX() <= width);
+	public boolean isIntoXBefore(Coordenate coor) {		
+		return (coor.getX() >= this.getX());
+	}
+	
+	public boolean isIntoXAfter(Coordenate coor) {		
+		return (coor.getX() <= width);
 	}
 	
 	/**
@@ -34,8 +40,39 @@ public class WorkSpace extends Coordenate {
 	 * @param coor coordenada
 	 * @return true si está
 	 */
-	public boolean isIntoY(Coordenate coor) {
-		return (coor.getY() >= 0 && coor.getY() <= heigth);
+	public boolean isIntoYBefore(Coordenate coor) {
+		return (coor.getY() >= this.getY());
+	}
+	
+	public boolean isIntoYAfter(Coordenate coor) {
+		return (coor.getY() <= heigth);
+	}
+	
+	/*
+	 * Bugs de las esquinas
+	 */
+	public byte isIntoCorner(Coordenate coor) {
+		byte n = 0;
+		if (coor.getX() <= Constants.BUBBLE_MAX_SIZE && coor.getY() <= Constants.BUBBLE_MAX_SIZE) {
+			n = 1;
+		} else if (coor.getX() > (this.width - Constants.BUBBLE_MAX_SIZE) && coor.getY() <= Constants.BUBBLE_MAX_SIZE) {
+			n = 2;
+		} else if (coor.getX() < Constants.BUBBLE_MAX_SIZE && coor.getY() > (this.heigth - Constants.BUBBLE_MAX_SIZE)) {
+			n = 3;
+		} else if (coor.getX() > (this.width - Constants.BUBBLE_MAX_SIZE) && coor.getY() > (this.heigth - Constants.BUBBLE_MAX_SIZE)) {
+			n = 4;
+		}		
+		return n;
+	}
+	
+
+	
+	public double getHeigth() {
+		return heigth;
+	}
+	
+	public double getWidth() {
+		return width;
 	}
 
 }
