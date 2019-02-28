@@ -1,5 +1,7 @@
 package co.uptc.bubbles.model.logic;
 
+import java.util.Random;
+
 import co.uptc.bubbles.model.Entity.Bubble;
 import co.uptc.bubbles.model.Entity.Coordenate;
 import co.uptc.bubbles.model.Entity.WorkSpace;
@@ -12,12 +14,16 @@ public class ThreadBubble extends Thread {
 	private boolean toMove;
 	private boolean live;
 	private WorkSpace workSpace;
+	private boolean tam;
+	private double factor;
 	
 	public ThreadBubble(Bubble bubble, WorkSpace workSpace) {
 		this.toMove = false;
 		this.live = true;
 		this.bubble = bubble;
 		this.workSpace = workSpace;
+		this.tam = false;
+		factor = 1500;
 	}	
 	
 	public void mover() {
@@ -27,10 +33,23 @@ public class ThreadBubble extends Thread {
 	//Calcular la velocidad y el tamaño
 	public void changeValue() {
 		
-//		this.bubble.setSize(this.bubble.getSize());
-//		this.bubble.setSpeed(this.bubble.getSpeed());
-		this.bubble.setSize(Math.random()*Constants.BUBBLE_MAX_SIZE);
-		this.bubble.setSpeed(Math.random()*Constants.BUBBLE_MAX_SPEED);
+		if (tam) {
+			this.bubble.setSize(this.bubble.getSize() + 0.1);
+			this.bubble.setSpeed((factor)/this.bubble.getSize());
+			factor -= 10;
+		} else {
+			this.bubble.setSize(this.bubble.getSize() - 0.1);
+			this.bubble.setSpeed((factor)/this.bubble.getSize());
+			factor += 10;
+		} 
+		
+		if (this.bubble.getSize() > Constants.BUBBLE_MAX_SIZE) {
+			tam = false;
+		} 
+		if ( this.bubble.getSize() < Constants.BUBBLE_MIN_SIZE) {
+			tam = true;
+		}
+				
 	}
 	
 	@Override
@@ -40,9 +59,10 @@ public class ThreadBubble extends Thread {
 			while (toMove) {
 				
 				this.bubble.move(this.bubble.getSpeed()*REFRESH_TIME/1000);
-				if (!workSpace.isInto(this.bubble.getCoordenate())) {
-					this.bubble.setDirection(this.bubble.getDirection() + (Math.random()*Math.PI)); 
-				}
+//				if (!workSpace.isInto(this.bubble.getCoordenate())) {
+//					this.bubble.setDirection(this.bubble.getDirection() + (Math.random()*Math.PI)); 
+//				}
+				returnToWorkSpace();
 				changeValue();
 				
 				try {
@@ -53,6 +73,37 @@ public class ThreadBubble extends Thread {
 			}
 		}
 
+	}
+	
+	public void returnToWorkSpace() {
+		Random rnd = new Random();
+		//Regresa si se ha salido del eje X
+		if (!workSpace.isIntoXBefore(this.bubble.getCoordenate())) {
+			this.bubble.getCoordenate().setX(workSpace.getX() + 0);
+			this.bubble.setDirection(this.bubble.getDirection() + Math.toRadians(rnd.nextInt(90) +1)); 
+		} else if (!workSpace.isIntoXAfter(this.bubble.getCoordenate())) {
+			this.bubble.getCoordenate().setX(workSpace.getWidth() - 0);
+			this.bubble.setDirection(this.bubble.getDirection() + Math.toRadians(rnd.nextInt(180) + 91));
+		}
+		//Se regresa si ha salido del eje y
+		if (!workSpace.isIntoYBefore(this.bubble.getCoordenate())) {
+			this.bubble.getCoordenate().setY(workSpace.getY() + 0);
+			this.bubble.setDirection(this.bubble.getDirection() + Math.toRadians(rnd.nextInt(180) + 181));
+		} else if (!workSpace.isIntoYAfter(this.bubble.getCoordenate())) {
+			this.bubble.getCoordenate().setY(workSpace.getHeigth() - 0);
+			this.bubble.setDirection(this.bubble.getDirection() + Math.toRadians(rnd.nextInt(180) + 1));
+		}
+		//Si esta en una esquina cambia la direccion
+		byte n = workSpace.isIntoCorner(this.bubble.getCoordenate());
+		if (n == 1) {
+			this.bubble.setDirection(this.bubble.getDirection() + Math.toRadians(rnd.nextInt(90) + 271)); 
+		} else if (n == 2) {
+			this.bubble.setDirection(this.bubble.getDirection() + Math.toRadians(rnd.nextInt(90) + 181)); 
+		} else if (n == 3) {
+			this.bubble.setDirection(this.bubble.getDirection() + Math.toRadians(rnd.nextInt(90) + 1)); 
+		} else if (n == 4) {
+			this.bubble.setDirection(this.bubble.getDirection() + Math.toRadians(rnd.nextInt(90) + 91)); 
+		}
 	}
 	
 	public WorkSpace getWorkSpace() {

@@ -21,7 +21,7 @@ public class BubbleGUI extends ThreadBubble {
 		g.setColor(color);
 		g.fillOval((int)this.getBubble().getCoordenate().getX(), (int)this.getBubble().getCoordenate().getY(),
 				(int)this.getBubble().getSize(), (int)this.getBubble().getSize());
-		
+		g.drawRect(100, 100, 950, 550);
 	}
 
 }
