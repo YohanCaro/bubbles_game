@@ -12,75 +12,52 @@ import co.uptc.structures.simple_list.MySimpleList;
 public class WorkAreaJPanel extends JPanel implements Runnable {
 	
 	private final long REFRES_TIME = 50;
-	private BubbleGUI bubbleGUI;
-	private MySimpleList<BubbleGUI> bubblesList;
+	private BubblesGUIGroup groupBubbles;
+	private Cursor<BubbleGUI> cursor;
 	
-	public WorkAreaJPanel(ThreadBubble bubble) {
-		this.bubbleGUI = new BubbleGUI(bubble);
-		this.bubbleGUI.start();
-		this.bubbleGUI.mover();
+	public WorkAreaJPanel(BubblesGUIGroup bubblesGUIGroup) {
+		this.groupBubbles = bubblesGUIGroup;
 		this.start();
 	}
 	
-	public WorkAreaJPanel(MySimpleList<ThreadBubble> threads) {
-		bubblesList = new MySimpleList<>();
-		Cursor<ThreadBubble> cursor = new Cursor<>(threads);
-		
-		while (!cursor.isOut()) {
-			BubbleGUI b = new BubbleGUI(cursor.getInfo());
-			b.start();
-			b.mover();
-			bubblesList.add(b);
-			cursor.next();
-		}
-		
+	public WorkAreaJPanel(Cursor<BubbleGUI> cursor) {
+		this.cursor = cursor;
 		this.start();
 	}
 	
 	public void start() {
+		this.cursor.reset();
 		new Thread(this).start();
+				
+		while (!this.cursor.isOut()) {
+			this.cursor.getInfo().start();
+			this.cursor.nextAndGetInfo().mover();
+		}
+		
 	}
 	
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-//		bubbleGUI.draw((Graphics2D) g);
-		
-		Cursor<BubbleGUI> cursor = new Cursor<>(this.bubblesList);
 		
 		while (!cursor.isOut()) {
-			cursor.getInfo().draw((Graphics2D) g);
-			cursor.next();
+			cursor.nextAndGetInfo().draw((Graphics2D) g);
 		}
+		cursor.reset();
 	}
-	
-//	@Override
-//	public void run() {
-//		while (bubbleGUI.isToMove()) {
-//			try {
-//				Thread.sleep(REFRES_TIME);
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
-//			this.repaint();
-//		}
-//	}
-	
+		
 	@Override
 	public void run() {
-		Cursor<BubbleGUI> cursor = new Cursor<>(bubblesList);
-		while (cursor.getInfo().isToMove()) {
-			try {
-				Thread.sleep(REFRES_TIME);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+//		while (!cursor.isOut()) {
+			while (true) {
+				try {
+					Thread.sleep(REFRES_TIME);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				this.repaint();
 			}
-			this.repaint();
-			cursor.next();
-			if (cursor.isOut()) {
-				cursor.reset();
-			}
-		}
+//		}
 	}
 	
 	

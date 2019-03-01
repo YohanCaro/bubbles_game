@@ -8,8 +8,8 @@ public class TestWorkSpace {
 		
 		Coordenate coordenate = new Coordenate(1000, 700);
 		System.out.println("El punto esta " + (workSpace.isInto(coordenate)?"dentro":"fuera") + " del área de juego!");
-		System.out.println("El punto esta " + (workSpace.isIntoX(coordenate)?"dentro":"fuera") + " del área de juego en X!");
-		System.out.println("El punto esta " + (workSpace.isIntoY(coordenate)?"dentro":"fuera") + " del área de juego en Y!");
+//		System.out.println("El punto esta " + (workSpace.isIntoX(coordenate)?"dentro":"fuera") + " del área de juego en X!");
+//		System.out.println("El punto esta " + (workSpace.isIntoY(coordenate)?"dentro":"fuera") + " del área de juego en Y!");
 	}
 
 }

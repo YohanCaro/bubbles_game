@@ -1,8 +1,8 @@
 package co.uptc.structures.simple_list;
 
 import java.util.Comparator;
+import java.util.Iterator;
 
-import co.uptc.structures.simple_list.Node;
 
 /**
  * Fecha 31/08/2018
@@ -11,7 +11,7 @@ import co.uptc.structures.simple_list.Node;
  * 
  * @param <T> Clase de un elemento u objeto!
  */
-public class MySimpleList<T> {
+public class MySimpleList<T> implements Iterable<T> {
 	
     protected Node<T> head;
     private Comparator<T> comparator;
@@ -211,6 +211,22 @@ public class MySimpleList<T> {
     	}
     	
     }
+    
+    public T get(int i) {
+    	if (head != null) {
+    		int cont = 0;
+    		Node<T> aux = this.head;
+    		while (aux != null) {
+    			if (cont == i) {
+    				return aux.getInfo();
+    			} else {
+    				aux = aux.next;
+    				cont++;
+    			}
+    		}
+    	} 
+		return null;
+    }
 
     /**
      * Metodo que devuelve la cabeza!
@@ -234,6 +250,11 @@ public class MySimpleList<T> {
     
     public void setHead(Node<T> head) {
 		this.head = head;
+	}
+
+	@Override
+	public Iterator<T> iterator() {
+		return new Cursor<T>(this);
 	}
     
 }

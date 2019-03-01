@@ -80,7 +80,11 @@ public class ThreadBubble extends Thread {
 		//Regresa si se ha salido del eje X
 		if (!workSpace.isIntoXBefore(this.bubble.getCoordenate())) {
 			this.bubble.getCoordenate().setX(workSpace.getX() + 0);
-			this.bubble.setDirection(this.bubble.getDirection() + Math.toRadians(rnd.nextInt(90) +1)); 
+			if (workSpace.isIntoCorner(this.bubble.getCoordenate()) == 1) { //Esqina superior izq
+				this.bubble.setDirection(this.bubble.getDirection() + Math.toRadians(rnd.nextInt(90) + 271)); 
+			} else { //Cualquier otro borde de x
+				this.bubble.setDirection(this.bubble.getDirection() + Math.toRadians(rnd.nextInt(90) +1)); 
+			}
 		} else if (!workSpace.isIntoXAfter(this.bubble.getCoordenate())) {
 			this.bubble.getCoordenate().setX(workSpace.getWidth() - 0);
 			this.bubble.setDirection(this.bubble.getDirection() + Math.toRadians(rnd.nextInt(180) + 91));
@@ -93,17 +97,7 @@ public class ThreadBubble extends Thread {
 			this.bubble.getCoordenate().setY(workSpace.getHeigth() - 0);
 			this.bubble.setDirection(this.bubble.getDirection() + Math.toRadians(rnd.nextInt(180) + 1));
 		}
-		//Si esta en una esquina cambia la direccion
-		byte n = workSpace.isIntoCorner(this.bubble.getCoordenate());
-		if (n == 1) {
-			this.bubble.setDirection(this.bubble.getDirection() + Math.toRadians(rnd.nextInt(90) + 271)); 
-		} else if (n == 2) {
-			this.bubble.setDirection(this.bubble.getDirection() + Math.toRadians(rnd.nextInt(90) + 181)); 
-		} else if (n == 3) {
-			this.bubble.setDirection(this.bubble.getDirection() + Math.toRadians(rnd.nextInt(90) + 1)); 
-		} else if (n == 4) {
-			this.bubble.setDirection(this.bubble.getDirection() + Math.toRadians(rnd.nextInt(90) + 91)); 
-		}
+
 	}
 	
 	public WorkSpace getWorkSpace() {

@@ -1,11 +1,13 @@
 package co.uptc.structures.simple_list;
 
+import java.util.Iterator;
+
 /**
  * Clase que maneja el cursor que se va a mover en la lista!
  * Fecha 31/08/2018
  * @author Yohan Caro
  */
-public class Cursor<T> extends MySimpleList<T> {
+public class Cursor<T> extends MySimpleList<T> implements Iterator<T> {
     
     private Node<T> cursor;
 
@@ -30,7 +32,7 @@ public class Cursor<T> extends MySimpleList<T> {
         return this.cursor.info;
     }
     
-    public void next() {
+    public void nextElement() {
         this.cursor = cursor.next;
     }
     
@@ -39,5 +41,17 @@ public class Cursor<T> extends MySimpleList<T> {
         this.cursor = cursor.next;
         return aux;
     }
+
+	@Override
+	public boolean hasNext() {
+		return this.cursor.next == null;
+	}
+
+	@Override
+	public T next() {
+		T aux = cursor.info;
+        this.cursor = cursor.next;
+        return aux;
+	}
     
 }
