@@ -33,6 +33,37 @@ public class TestWorkAreaJPanel {
 							rnd.nextInt((int) ((Constants.BUBBLE_MAX_SPEED -Constants.BUBBLE_MIN_SPEED)+Constants.BUBBLE_MIN_SPEED)),
 							rnd.nextInt(360)) , space)));
 		}
+		
+		
+		long lifeTime = 2; //segundos
+		
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				BubbleGUI b = null;
+				while (true) {
+					list.remove(list.get(rnd.nextInt(numberBubbles)));
+					
+					try {
+						Thread.sleep(lifeTime*1000);
+					} catch (InterruptedException e) {
+					}
+					
+					b = new BubbleGUI(new ThreadBubble(
+							new Bubble(new Coordenate(rnd.nextInt(width-posArea), rnd.nextInt(heigth-posArea)),
+							rnd.nextInt((Constants.BUBBLE_MAX_SIZE -Constants.BUBBLE_MIN_SIZE)+Constants.BUBBLE_MIN_SIZE),
+							rnd.nextInt((int) ((Constants.BUBBLE_MAX_SPEED -Constants.BUBBLE_MIN_SPEED)+Constants.BUBBLE_MIN_SPEED)),
+							rnd.nextInt(360)) , space));
+					
+					b.mover();
+					b.start();
+										
+					list.add(b);
+				}
+				
+			}
+		}).start();
+		
 		Cursor<BubbleGUI> cursor = new Cursor<>(list);
 		
 		JFrame frame = new JFrame("WorkAreaJPanel");

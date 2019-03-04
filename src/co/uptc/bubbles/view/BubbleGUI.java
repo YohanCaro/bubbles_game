@@ -6,6 +6,7 @@ import java.util.Random;
 
 import co.uptc.bubbles.model.Entity.Bubble;
 import co.uptc.bubbles.model.logic.ThreadBubble;
+import co.uptc.bubbles.utilities.Constants;
 
 public class BubbleGUI extends ThreadBubble {
 	
@@ -22,6 +23,7 @@ public class BubbleGUI extends ThreadBubble {
 		g.fillOval((int)this.getBubble().getCoordenate().getX(), (int)this.getBubble().getCoordenate().getY(),
 				(int)this.getBubble().getSize(), (int)this.getBubble().getSize());
 		g.drawRect(0, 0, 1050, 720);
+				
 	}
 
 }

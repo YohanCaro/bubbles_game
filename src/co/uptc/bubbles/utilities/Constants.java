@@ -9,4 +9,7 @@ public class Constants {
 	public static final double PERIOD_SIZE = 50;
 	public static final double PERIOD_SPEED = 50;
 	
+	public static double PENDIENTE = (BUBBLE_MAX_SPEED-BUBBLE_MIN_SPEED)/(BUBBLE_MAX_SIZE-BUBBLE_MIN_SIZE);
+	public static double B = (PENDIENTE*BUBBLE_MAX_SPEED/BUBBLE_MIN_SPEED) - (BUBBLE_MAX_SIZE/BUBBLE_MIN_SIZE);
+	
 }
