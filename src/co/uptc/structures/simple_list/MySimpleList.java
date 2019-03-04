@@ -152,24 +152,21 @@ public class MySimpleList<T> implements Iterable<T> {
      * @param info elemento a eliminar.
      */
     public void remove(T info) {
-        if (this.head != null) {
-            if (comparator.compare(head.info, info) == 0) {
-                this.head = this.head.next;
-            } else {
-                Node<T> aux = this.head.next;
-                Node<T> ant = this.head;
-                while (aux != null) {
-                    if (comparator.compare(aux.info, info) == 0) {
-                        ant.next = aux.next;
-                    }
-                    ant = aux;
-                    aux = aux.next;
-                }
-            }
-        }
-
-        Node<T> aux = this.head;
-    }
+		if (this.head != null)
+			if (this.head.getInfo().equals(info)) {
+				this.head = this.head.next;
+			} else {
+				Node<T> previousAux = this.head;
+				Node<T> aux = this.head.next;
+				while (aux != null) {
+					if (aux.getInfo().equals(info)) {
+						previousAux.next = aux.next;
+					}
+					previousAux = aux;
+					aux = aux.next;
+				}
+			}
+	}
     
     /**
      * Metodo que muestra si la lista esta vacia!
