@@ -2,6 +2,12 @@ package co.uptc.bubbles.model.Entity;
 
 import java.awt.Image;
 
+/**
+ * Clase User usuario
+ * Fecha 01/03/2019
+ * @author Yohan Caro
+ * @version 1.0
+ */
 public class User {
 	
 	private String nickName;
